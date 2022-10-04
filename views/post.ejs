@@ -1,0 +1,38 @@
+<%- include("../partials/header") -%>
+<div class="bg-light" style="min-height: 80vh;">
+  <div class="aboutSenior d-flex  flex-column justify-content-center align-items-center">
+    <h1 class="text-capitalize"><%=p2.name%></h1>
+    <h5 class="text-capitalize">Institution : <%=p2.collegeName%></h5>
+    <h5 class="text-capitalize">Course : <%=p2.courseName%></h5>
+    <h5 class="text-capitalize">Branch : <%=p2.branchName%></h5>
+    <h5 class="text-capitalize">Year of Graduation : <%=p2.graduationYear%></h5>
+    <h5 class="">Email : <%=p2.email%></h5>
+
+  </div>
+
+   <div class="likeSenior d-flex  flex-column justify-content-center align-items-center">
+    <button type="button" class="btn btn-success">Total likes <span><%=p2.likes%></span></button>
+    <form action="/like" method="post">
+      <button type="submit" class="btn btn-primary" value="<%=p2.userName%>" name="like">Like</button>
+    </form>
+  
+   </div>
+ 
+   <div class="container-sm allPosts">
+  <h3 class="fs-5 fw-normal text-center bg-light lh-lg" style="border-radius:10px;" >Posts <%=p2.posts.length%> </h3>
+  <div class="row">
+   <% p2.posts.forEach((post)=>{ %>
+    <div class="card " style="padding:10px; margin: 20px;">
+      <div class="card-body">   
+        <h5 class="card-title"><%=post.title%></h5>
+        <p class="card-text"><%=post.details%></p>
+      </div>
+    </div>
+   
+    <%})%>
+  </div>
+</div>
+ 
+</div>
+
+  <%- include("../partials/footer") -%>

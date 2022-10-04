@@ -1,0 +1,47 @@
+<%- include("../partials/header") -%>
+
+
+ <div class="profileInfo container-sm d-flex justify-content-center align-items-center flex-column">
+  <h1 class="fw-light text-uppercase">Welcome <span style="color:blue;"><%= p2.name %></span> </h1>
+  <h4 class="fw-light ">Visitors : <span style="color:grey;"><%= p2.visitors %></span></h2>
+  <h4 class="fw-light ">Likes : <span style="color:grey"><%= p2.likes %></span></h2>
+</div>
+
+<div class="container-sm">
+  <div class="d-flex flex-wrap">
+    <%for(var i=0;i<p2.posts.length;i++){%>
+     <div class="col-sm-6">
+       <div class="card">
+         <div class="card-body">
+           <h5 class="card-title"><%=p2.posts[i].title%></h5>
+           <p class="card-text"><%=p2.posts[i].details%></p>
+          <form action="/deletePost" method="post">  
+            <input type="hidden" name="postId" value="<%=p2.posts[i].postId%>" >
+            <button type="submit" class=" btn btn-success" value="<%=p2._id%>" name="_id">Delete</button>
+          </form>
+          </div>
+       </div>
+     </div>
+    <%}%>
+</div>
+</div> -->
+  
+  
+
+   <!-- <% var id=p2._id;%> -->
+  <form action="/newPost" class="newPost bg-light container-sm" method="post" >
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+      <input type="text" class="form-control" aria-label="Sizing example input" name="title" aria-describedby="inputGroup-sizing-default">
+    </div>   
+     <div class="input-group">
+      <span class="input-group-text">Details</span>
+      <textarea class="form-control" aria-label="With textarea" name="details"></textarea>
+    </div>
+    <button type="submit" class="container btn btn-success" name="id"  value="<%=p2._id%>">Add Post</button>
+  </form>
+</div>
+
+
+    
+<%- include("../partials/footer") -%>

@@ -1,0 +1,28 @@
+  .signupForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+.signupForm form{
+    width: 50vw;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.signupForm form input{
+    margin: 5px;
+}
+
+@media only screen and (max-width:450px){
+    
+    .signupForm form{
+        width: 90vw;
+        height: 80vh;
+    }
+    .signupForm form input{
+        margin: 5px;
+    }
+
+}
