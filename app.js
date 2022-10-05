@@ -308,7 +308,7 @@ app.post("/like", function (req, res) {
 
 
 
-app.listen(process.env.PORT || 3000, function () {
+app.listen(process.env.PORT, function () {
   console.log("server is running on port 3000");
 });
 
