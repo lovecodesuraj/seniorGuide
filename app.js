@@ -7,7 +7,7 @@ const fuseSearch = require('fuse.js');
 
 // const { application } = require("express");
 
-mongoose.connect("mongodb+srv://openforce:Openforce123@cluster0.enooy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://qhdev:qhdev@cluster0.aijcp.mongodb.net/test", {
   useNewUrlParser: true,
 });
 
