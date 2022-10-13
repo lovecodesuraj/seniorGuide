@@ -27,6 +27,10 @@ h2{
      /* position: absolute;
      right: 10vw; */
 }
+.card-body p{
+    padding:10px;
+    border-radius: 10px;
+}
 .wrap{
     width: 100vw;
     display: flex;

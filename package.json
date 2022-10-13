@@ -3,12 +3,8 @@
   "version": "1.0.0",
   "description": "a proper guide to loving juniors",
   "main": "app.js",
-  "engines": {
-    "node": "v16.16.0"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tuktuk",
   "license": "ISC",

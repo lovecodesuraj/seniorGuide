@@ -14,17 +14,22 @@
        <div class="card">
          <div class="card-body">
            <h5 class="card-title"><%=p2.posts[i].title%></h5>
-           <p class="card-text"><%=p2.posts[i].details%></p>
+           <%  console.log("bharat")%>
+           <p class="card-text" ondblclick="edit(this.id)" id="<%=p2.posts[i].postId%>"><%=p2.posts[i].details%></p>
           <form action="/deletePost" method="post">  
             <input type="hidden" name="postId" value="<%=p2.posts[i].postId%>" >
-            <button type="submit" class=" btn btn-success" value="<%=p2._id%>" name="_id">Delete</button>
+            <!-- <button></button> -->
+            <button value="<%=p2.posts[i].postId%>" class="<%=p2.posts[i].postId%> btn btn-primary save" 
+              style="display:none;" onclick="savePost(this.value)">Save</button>
+            <button type="submit" class="  <%=p2.posts[i].postId%> btn btn-success delete" value="<%=p2._id%>" 
+              name="_id">Delete</button>
           </form>
           </div>
        </div>
      </div>
     <%}%>
 </div>
-</div> -->
+</div> 
   
   
 
@@ -43,5 +48,28 @@
 </div>
 
 
-    
-<%- include("../partials/footer") -%>
+
+<script>
+      
+
+
+      function edit(id){
+        var ele=document.getElementById(id);
+        var savebtn=document.getElementsByClassName(id)[0];
+        var deletebtn=document.getElementsByClassName(id)[1];
+        savebtn.style.display="inline-block";
+        ele.setAttribute("contenteditable", "true");
+        // deletebtn.style.display="none";
+
+      }
+      function savePost(id){
+        var ele=document.getElementById(id);
+        var savebtn=document.getElementsByClassName(id)[0];
+        var deletebtn=document.getElementsByClassName(id)[1];
+        savebtn.style.display="none";
+        ele.setAttribute("contenteditable", "false");
+        // deletebtn.style.display="block";
+
+      }
+     
+</script>
