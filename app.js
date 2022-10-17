@@ -20,20 +20,43 @@ connect();
 // var seniorsList=[];
 
 const seniorSchema = new mongoose.Schema({
-  userName: String,
-  name: String,
-  email: String,
-  password: String,
-  journey: String,
-  // profilePicture:File,
+  userName:{
+    type:String,
+    required:true,
+  } ,
+  name: {
+    type:String,
+    required:true,
+  } ,
+  email: {
+    type:String,
+    required:true,
+  } ,
+  password: {
+    type:String,
+    required:true,
+  } ,
+
   posts: {
     type: Array,
     default: "",
   },
-  collegeName: String,
-  courseName: String,
-  branchName: String,
-  graduationYear: Number,
+  collegeName: {
+    type:String,
+    required:true,
+  } ,
+  courseName: {
+    type:String,
+    required:true,
+  } ,
+  branchName: {
+    type:String,
+    required:true,
+  } ,
+  graduationYear: {
+    type:String,
+    required:true,
+  } ,
   postsUrl: String,
   profilerUrl: String,
   profilePicture: String,
@@ -130,7 +153,6 @@ app.get("/posts/:userName", function (req, res) {
       p1 = "error";
       p2 = "user not found!!";
     } else {
-      console.log(senior);
       p1 = "post";
       p2 = senior;
     }

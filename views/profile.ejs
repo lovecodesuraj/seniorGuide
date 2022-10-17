@@ -37,11 +37,11 @@
   <form action="/newPost" class="newPost bg-light container-sm" method="post" >
     <div class="input-group mb-3">
       <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
-      <input type="text" class="form-control" aria-label="Sizing example input" name="title" aria-describedby="inputGroup-sizing-default">
+      <input type="text" class="form-control" aria-label="Sizing example input" required name="title" aria-describedby="inputGroup-sizing-default">
     </div>   
      <div class="input-group">
       <span class="input-group-text">Details</span>
-      <textarea class="form-control" aria-label="With textarea" name="details"></textarea>
+      <textarea class="form-control" required aria-label="With textarea" name="details"></textarea>
     </div>
     <button type="submit" class="container btn btn-success" name="id"  value="<%=p2._id%>">Add Post</button>
   </form>
