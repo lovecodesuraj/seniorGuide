@@ -19,7 +19,7 @@
     
     .signupForm form{
         width: 90vw;
-        height: 80vh;
+        min-height: 80vh;
     }
     .signupForm form input{
         margin: 5px;
