@@ -143,7 +143,7 @@ app.get("/home", function (req, res) {
 
 
 app.post("/profile", function (req, res) {
-  console.log(User);
+     
     res.render("profile", { User });
 });
 
@@ -230,6 +230,7 @@ app.post("/searchResult", function (req, res) {
 app.post("/deletePost", function (req, res) {
   var _id = req.body._id;
   var postId = req.body.postId;
+ 
 
   Senior.findOne({ _id }, function (err, user) {
     if (err) {
@@ -250,11 +251,12 @@ app.post("/deletePost", function (req, res) {
       );
     }
   });
-  Senior.findById({ _id }, function (err, p2) {
+  Senior.findById({ _id }, function (err, user) {
     if (err) {
       console.log(err);
     } else {
-      res.render("profile", { p2 });
+      User=user;
+      res.render("profile", { User });
     }
   });
 });
@@ -314,11 +316,12 @@ app.post("/newPost", function (req, res) {
       if (err) throw err;
     }
   );
-  Senior.findById({ _id }, function (err, p2) {
+  Senior.findById({ _id }, function (err, user) {
     if (err) {
       console.log(err);
     } else {
-      res.render("profile", { p2 });
+      User=user;
+      res.render("profile", { User });
     }
   });
 });
