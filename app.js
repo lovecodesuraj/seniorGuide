@@ -1,17 +1,20 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { json } = require("body-parser");
 const mongoose = require("mongoose");
-const { name } = require("ejs");
+const ejs = require("ejs");
 const fuseSearch = require("fuse.js");
 
+var Seniors;
+var User;
+
 // const { application } = require("express");
-const url='mongodb+srv://tuktuk:adgjmptw@cluster0.hdo52av.mongodb.net/?retryWrites=true&w=majority';
-async function connect(){
-  try{
+const url =
+  "mongodb+srv://tuktuk:adgjmptw@cluster0.hdo52av.mongodb.net/?retryWrites=true&w=majority";
+async function connect() {
+  try {
     await mongoose.connect(url);
     console.log("connected to MongoDB");
-  }catch(error){
+  } catch (error) {
     console.error(error);
   }
 }
@@ -20,43 +23,43 @@ connect();
 // var seniorsList=[];
 
 const seniorSchema = new mongoose.Schema({
-  userName:{
-    type:String,
-    required:true,
-  } ,
+  userName: {
+    type: String,
+    required: true,
+  },
   name: {
-    type:String,
-    required:true,
-  } ,
+    type: String,
+    required: true,
+  },
   email: {
-    type:String,
-    required:true,
-  } ,
+    type: String,
+    required: true,
+  },
   password: {
-    type:String,
-    required:true,
-  } ,
+    type: String,
+    required: true,
+  },
 
   posts: {
     type: Array,
     default: "",
   },
   collegeName: {
-    type:String,
-    required:true,
-  } ,
+    type: String,
+    required: true,
+  },
   courseName: {
-    type:String,
-    required:true,
-  } ,
+    type: String,
+    required: true,
+  },
   branchName: {
-    type:String,
-    required:true,
-  } ,
+    type: String,
+    required: true,
+  },
   graduationYear: {
-    type:String,
-    required:true,
-  } ,
+    type: String,
+    required: true,
+  },
   postsUrl: String,
   profilerUrl: String,
   profilePicture: String,
@@ -75,20 +78,17 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 // mongoose.set('useFindAndModify', false);
 
+
 app.get("/", function (req, res) {
-  Senior.find({}, function (err, seniors) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("home", { seniors });
-    }
-  });
+  res.render('door');
 });
+
 app.get("/signup", function (req, res) {
   res.render("signup");
 });
 
-app.post("/signupCongo", function (req, res) {
+
+app.post("/afterSignup", function (req, res) {
   Senior.find({}, function (err, allSeniors) {
     // console.log(allSeniors);
     var i;
@@ -105,8 +105,6 @@ app.post("/signupCongo", function (req, res) {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        // journey:"My journey",
-        // profilePicture: File,
         posts: [],
         postsUrl: "/posts/" + req.body.userName + "/",
         profilerUrl: "/login/" + req.body.userName,
@@ -120,7 +118,7 @@ app.post("/signupCongo", function (req, res) {
 
       senior.save();
       // res.redirect("/");
-      p1 = "profile";
+      p1 = "door";
       p2 = senior;
     } else {
       p1 = "error";
@@ -129,6 +127,27 @@ app.post("/signupCongo", function (req, res) {
     res.render(p1, { p2 });
   });
 });
+
+
+
+app.get("/home", function (req, res) {
+  Senior.find({}, function (err, seniors) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("home", { seniors });
+    }
+  });
+});
+
+
+
+app.post("/profile", function (req, res) {
+  console.log(User);
+    res.render("profile", { User });
+});
+
+
 
 app.get("/posts/:userName", function (req, res) {
   const userName = req.params.userName;
@@ -229,7 +248,6 @@ app.post("/deletePost", function (req, res) {
           }
         }
       );
-
     }
   });
   Senior.findById({ _id }, function (err, p2) {
@@ -241,7 +259,7 @@ app.post("/deletePost", function (req, res) {
   });
 });
 
-app.post("/login/:userName", function (req, res) {
+app.post("/home", function (req, res) {
   // res.send("working!!");
   var userName = req.body.userName;
   var password = req.body.password;
@@ -257,15 +275,21 @@ app.post("/login/:userName", function (req, res) {
       p1 = "error";
       p2 = "User not found !!!";
     } else if (user.password === password) {
-      p1 = "profile";
-      p2 = user;
+      p1 = "home";
+      Senior.find({}, function (err, users) {
+        if (err) {
+          console.log(err);
+        } else {
+          seniors =users;
+          User=user;
+          res.render(p1, { seniors });
+        }
+      });
+
     } else {
       p1 = "error";
       p2 = "wrong password !!!";
-      // console.log("password incorrect !!!");
     }
-
-    res.render(p1, { p2 });
   });
 });
 

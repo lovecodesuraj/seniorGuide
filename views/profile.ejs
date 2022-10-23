@@ -2,26 +2,26 @@
 
 
  <div class="profileInfo container-sm d-flex justify-content-center align-items-center flex-column">
-  <h1 class="fw-light text-uppercase">Welcome <span style="color:blue;"><%= p2.name %></span> </h1>
-  <h4 class="fw-light ">Visitors : <span style="color:grey;"><%= p2.visitors %></span></h2>
-  <h4 class="fw-light ">Likes : <span style="color:grey"><%= p2.likes %></span></h2>
+  <h1 class="fw-light text-uppercase">Welcome <span style="color:blue;"><%= User.name %></span> </h1>
+  <h4 class="fw-light ">Visitors : <span style="color:grey;"><%= User.visitors %></span></h2>
+  <h4 class="fw-light ">Likes : <span style="color:grey"><%= User.likes %></span></h2>
 </div>
 
 <div class="container-sm">
   <div class="d-flex flex-wrap">
-    <%for(var i=0;i<p2.posts.length;i++){%>
+    <%for(var i=0;i<User.posts.length;i++){%> 
      <div class="col-sm-6">
        <div class="card">
          <div class="card-body">
-           <h5 class="card-title"><%=p2.posts[i].title%></h5>
-           <%  console.log("bharat")%>
-           <p class="card-text" ondblclick="edit(this.id)" id="<%=p2.posts[i].postId%>"><%=p2.posts[i].details%></p>
+           <h5 class="card-title"><%=User.posts[i].title%></h5>
+           <!-- <%  console.log("bharat")%> -->
+           <p class="card-text" ondblclick="edit(this.id)" id="<%=User.posts[i].postId%>"><%=User.posts[i].details%></p>
           <form action="/deletePost" method="post">  
-            <input type="hidden" name="postId" value="<%=p2.posts[i].postId%>" >
+            <input type="hidden" name="postId" value="<%=User.posts[i].postId%>" >
             <!-- <button></button> -->
-            <button value="<%=p2.posts[i].postId%>" class="<%=p2.posts[i].postId%> btn btn-primary save" 
+            <button value="<%=User.posts[i].postId%>" class="<%=User.posts[i].postId%> btn btn-primary save" 
               style="display:none;" onclick="savePost(this.value)">Save</button>
-            <button type="submit" class="  <%=p2.posts[i].postId%> btn btn-success delete" value="<%=p2._id%>" 
+            <button type="submit" class="<%=User.posts[i].postId%> btn btn-success delete" value="<%=User._id%>" 
               name="_id">Delete</button>
           </form>
           </div>
@@ -33,7 +33,7 @@
   
   
 
-   <!-- <% var id=p2._id;%> -->
+   <!-- <% var id=User._id;%> -->
   <form action="/newPost" class="newPost bg-light container-sm" method="post" >
     <div class="input-group mb-3">
       <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
@@ -43,7 +43,7 @@
       <span class="input-group-text">Details</span>
       <textarea class="form-control" required aria-label="With textarea" name="details"></textarea>
     </div>
-    <button type="submit" class="container btn btn-success" name="id"  value="<%=p2._id%>">Add Post</button>
+    <button type="submit" class="container btn btn-success" name="id"  value="<%=User._id%>">Add Post</button>
   </form>
 </div>
 

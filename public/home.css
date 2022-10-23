@@ -10,16 +10,15 @@ main{
    align-items: center;
 }
 .intro{
-    background-color:#fff;
-    /* background: linear-gradient(#CCCCCC,#408080); */
-   /* height: 60vh; */
+   background-color: #082E2E;
+   
 }
 .roww{
     /* height: 100%; */
         /* background: linear-gradient(#CCCCCC,#408080); */
         background-color: #082E2E;
 
-    width: 100%;
+    width: 100vw;
     display: flex;
     flex-wrap: wrap;
     /* display: flex; */
@@ -39,7 +38,7 @@ main{
 
 }
 .left img{
-    height: 60%;
+    height: 50%;
     margin-right: 10px;
 }
 .line{
@@ -53,9 +52,7 @@ main{
    margin-left: 20px;
 }
 .left{
-   /* flex-basis: 40%; */
-   /* position: relative; */
-   /* margin-left: 50px; */
+
    color: #fff;
    display: flex;
    align-items: center;
@@ -86,24 +83,14 @@ main{
 
 .right{
    width:50%;
-   height: 50vh;
+   height: 60vh;
    display: flex;
    align-items:center;
-   justify-content: space-evenly;
-   position: relative;
-   margin-top: 20px;
-   /* border-radius: 10px; */
-   /* border: 5px solid grey; */
-   /* margin-right:20px ; */
-   /* color: #fff; */
-   /* padding: 20px; */
-   /* flex-direction: row; */
+   justify-content: center;
+   
+
 }
-.loginForm{
-   border: 5px solid grey;
-   border-radius: 10px;
-   padding: 10px 20px;
-}
+
 .yourSeniorsHeading{
    padding: 8px;
     border-radius:8px; 
@@ -112,6 +99,7 @@ main{
 }
 main{
    background-color:#055959;
+   width: 100vw;
 }
 .aboutSenior h5{
     font-family: Arial, Helvetica, sans-serif;
@@ -145,6 +133,42 @@ main{
    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 }
+
+
+
+.about{
+   background-color:#055959;
+
+   display: flex;
+   align-items: center;
+   min-height: 80vh;
+   width: 100vw;
+   flex-direction: row;
+   /* padding: 50px; */
+   justify-content: space-evenly;
+
+}
+
+.aboutImg img{
+   width: 30vw;
+   border-radius: 10px;
+
+
+}
+.aboutText{
+   width: 40%;
+   height: 80%;
+   color: beige;
+   text-align: center;
+}
+
+
+
+
+
+
+
+
 footer{
    /* position: absolute; */
    /* bottom: 0; */
@@ -160,16 +184,21 @@ footer{
    .left{
        height: 400px;
        width: 100%;
+       display: flex;
+       justify-content: center;
+       align-items: center;
    }
    .right{
-   width: 100%;
-   height: 500px;
+    display: none;
    }
 }
 @media only screen and (max-width:450px){
    .left{
        height: 250px;
        width: 100%;
+       display: flex;
+       justify-content: center;
+       align-items: center;
    }
    .left h2{
        font-size: 18px;
@@ -182,9 +211,7 @@ footer{
    }
    .left img{
       margin-left: 0;
-       /* display: none; */
-       /* position: absolute; */
-       /* left: -50px; */
+    
    }
    .line{
        /* margin-left: 10px; */
@@ -202,10 +229,29 @@ footer{
    /* .container-sm{
       width: 80vw;
    } */
-   .wrapper{
-      /* flex-wrap: nowrap; */
-      /* justify-content: center; */
-      /* align-items: center; */
-   }
+   .about{
+      flex-direction: column;
+
+  }
+  .aboutImg{
+      width: 100vw;
+      /* padding: 20px; */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 40vh;
+
+  }
+  .aboutImg img{
+      width: 80%;
+  }
+  .right{
+   display: none;
+  }
+  .aboutText{
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+  }
    
 }
