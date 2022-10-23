@@ -182,9 +182,7 @@ app.get("/about", function (req, res) {
   res.render("about", {});
 });
 
-app.get("/signup", function (req, res) {
-  res.render("signup");
-});
+
 app.post("/searchResult", function (req, res) {
   const search = req.body.search;
 
@@ -316,12 +314,14 @@ app.post("/newPost", function (req, res) {
       if (err) throw err;
     }
   );
+
   Senior.findById({ _id }, function (err, user) {
     if (err) {
       console.log(err);
     } else {
       User=user;
       res.render("profile", { User });
+      // res.redirect('back');
     }
   });
 });
