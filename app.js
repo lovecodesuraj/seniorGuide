@@ -80,7 +80,8 @@ app.set("view engine", "ejs");
 
 
 app.get("/", function (req, res) {
-  res.render('door');
+  const message="";
+  res.render('door',{message});
 });
 
 app.get("/signup", function (req, res) {
@@ -88,7 +89,7 @@ app.get("/signup", function (req, res) {
 });
 
 
-app.post("/afterSignup", function (req, res) {
+app.post("/addUser", function (req, res) {
   Senior.find({}, function (err, allSeniors) {
     // console.log(allSeniors);
     var i;
@@ -118,13 +119,14 @@ app.post("/afterSignup", function (req, res) {
 
       senior.save();
       // res.redirect("/");
-      p1 = "door";
-      p2 = senior;
+      const message="";
+      res.render('door',{message})
     } else {
       p1 = "error";
       p2 = "Email address is in use already";
+      res.render(p1, { p2 });
     }
-    res.render(p1, { p2 });
+   
   });
 });
 
@@ -271,24 +273,23 @@ app.post("/home", function (req, res) {
       console.log(err);
       // connsole.log("error found!!!");
     } else if (user === null) {
-      // console.log(p2);
-      p1 = "error";
-      p2 = "User not found !!!";
+        const message="User not found";
+        res.render('door',{message});
     } else if (user.password === password) {
-      p1 = "home";
+      // p1 = "home";
       Senior.find({}, function (err, users) {
         if (err) {
           console.log(err);
         } else {
           seniors =users;
           User=user;
-          res.render(p1, { seniors });
+          res.render("home", { seniors });
         }
       });
 
     } else {
-      p1 = "error";
-      p2 = "wrong password !!!";
+      const message="Incorrect Password";
+        res.render('door',{message});
     }
   });
 });

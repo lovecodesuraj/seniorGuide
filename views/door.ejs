@@ -1,29 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>seniorGuide</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
-    <style>
-      .loginForm{
-       /* border: 5px solid grey; */
-       border-radius: 10px;
-       padding: 10px 20px;
-    }
-    .right{
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #E8CC9C;
-    }
-    </style>
-</head>
-
-<body>
 
 
 
@@ -31,28 +5,7 @@
 
 
 
-    <div class="right  text-light">
-        <form method="post" class="loginForm" id="loginForm">
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">User name</label>
-            <input type="text" name="userName" class="form-control" id="exampleInputEmail1"
-              aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text text-light">We'll never share your email with anyone else.</div>
-          </div>
-          <div class="mb-3">
-            <label for="passwword" class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" id="password">
-          </div>
-
-          <button type="submit" class="btn btn-light">Login</button>
-          <a href="/signup" class="text-light" style="margin-left: 10px;">signup</a>
-        </form>
-      </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html> -->
-
+    
 
 
 
@@ -62,22 +15,14 @@
 	<title>seniorGuide</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-<!--===============================================================================================-->	
 	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="/util.css">
 	<link rel="stylesheet" type="text/css" href="/door.css">
-<!--===============================================================================================-->
 </head>
 <body>
 	
@@ -92,7 +37,7 @@
 					<span class="login100-form-title">
 						Member Login
 					</span>
-
+                    <span class="message" style="width: 100%; margin:5px 0;color:#B351C2; display:flex;justify-content:center;"><%=message%></span>
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 						<input class="input100" type="text"  placeholder="Username" name="userName" required>
 						<span class="focus-input100"></span>

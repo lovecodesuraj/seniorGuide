@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "a proper guide to loving juniors",
   "main": "app.js",
+  
   "engines": {
     "node": "16.16.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    
   },
   "author": "tuktuk",
   "license": "ISC",
@@ -17,6 +19,7 @@
     "express": "^4.18.1",
     "fuse.js": "^6.6.2",
     "mongoose": "^6.6.0",
-    "node-sessionstorage": "^1.0.0"
+    "node-sessionstorage": "^1.0.0",
+    "popups": "^1.1.3"
   }
 }
