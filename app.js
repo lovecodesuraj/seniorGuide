@@ -7,7 +7,7 @@ const fuseSearch = require('fuse.js');
 
 // const { application } = require("express");
 
-mongoose.connect("mongodb://localhost:27017/seniorsDB", {
+mongoose.connect("mongodb+srv://qhdev:qhdev@cluster0.aijcp.mongodb.net/test", {
   useNewUrlParser: true,
 });
 
@@ -307,8 +307,8 @@ app.post("/like", function (req, res) {
 });
 
 
-
-app.listen(process.env.PORT, function () {
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, function () {
   console.log("server is running on port 3000");
 });
 
