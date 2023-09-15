@@ -1,4 +1,6 @@
-/node_modules
-npm-debug.log
-.DS_Store
-/*.env 
+
+mongodb-realm/
+src/db/
+scratch/
+src/controllers/image.png
+node_modules/
