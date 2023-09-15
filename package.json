@@ -6,18 +6,13 @@
     "run": "node src/index.js",
     "dev": "nodemon src/index.js --ext js,json,html,css",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js"
+    "start": "node src/index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NikhilRattaNITKKR/Debuggers.git"
-  },
-  "author": "Nikhil Ratta",
+
+  "author": "Suraj chaudhary",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/NikhilRattaNITKKR/Debuggers/issues"
-  },
-  "homepage": "https://github.com/NikhilRattaNITKKR/Debuggers#readme",
+
+  "homepage": "https://github.com/lovecodesuraj/seniorguide#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
     "axios": "^1.5.0",
