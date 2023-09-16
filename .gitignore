@@ -4,3 +4,4 @@ src/db/
 scratch/
 src/controllers/image.png
 /node_modules
+.env/
