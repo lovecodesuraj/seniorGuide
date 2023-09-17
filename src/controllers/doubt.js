@@ -1,9 +1,8 @@
-const Realm = require('realm');
-const BSON = require('bson');
 const ejs = require('../public/javascript/ejs');
+const {User} =require("../models/user.js")
+const {Doubt} =require("../models/doubt.js")
 
 
-// const app = new Realm.App({ id: "debuggers-lzxyc" });
 let doubts = [];
 let user;
 
@@ -18,8 +17,8 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 const getDoubtForum = async(req, res) =>{
   try {
     if (req.cookies.uid) {
-      const Users = req.app.get('Users');
-      const Doubts = req.app.get('Doubts');
+      const Users = await User.find();
+      const Doubts = await Doubt.find();
 
 
 
@@ -30,7 +29,7 @@ const getDoubtForum = async(req, res) =>{
       let otherDoubts = [];
 
 
-      doubts = await Doubts.find().toArray()
+      doubts = await Doubt.find()
       .then(result => {
         if (result) {
           // console.log(result);
@@ -42,7 +41,7 @@ const getDoubtForum = async(req, res) =>{
       if (!localStorage.user) {
         try {
           console.log('Doesnot Exist');
-          let user = await Users.findOne({_id: new BSON.ObjectId(req.cookies.uid.toString())})
+          let user = await User.findOne({_id:req.cookies.uid.toString()})
           localStorage.setItem('user',JSON.stringify(user))
         } catch (e) {
           console.error(e);
@@ -111,26 +110,22 @@ const getSpecificDoubt = async(req, res) => {
 
 const createDoubt = async(req, res) => {
 
-  const Doubts = req.app.get('Doubts');
+  const Doubts = await Doubt.find();
 
-  let domain = user.email.split('@');
-  domain = domain[1];
-
+  
   let userName = "Anonymous"
   if(req.body.postType === "User") userName = user.name;
 
   try {
-    const result = await Doubts.insertOne({
-      _id: new BSON.ObjectId,
-      uid: new BSON.ObjectId(user._id.toString()),
+    const result = await Doubt.create({
+      uid:user._id.toString(),
       userName: userName,
       question: req.body.question.trim(),
       desc: req.body.desc.trim(),
       upvotes: [],
       downvotes: [],
-      domain: domain,
+      domain: "nitkkr",
     })
-
 
     console.log(result);
 
@@ -144,20 +139,19 @@ const createDoubt = async(req, res) => {
 
 const createAnswer = async(req, res) => {
 
-  const Doubts = req.app.get('Doubts');
+  const Doubts = await Doubt.find();
 
 
   try {
     //  if() Add radio Buton value Here
 
-    const result = await Doubts.updateOne({
-      _id: new BSON.ObjectId(req.params.id)
+    const result = await Doubt.findOneAndUpdate({
+      _id:req.params.id
     },
     {
       $addToSet: {
         answers: {
-          _id: new BSON.ObjectId(),
-          uid: new BSON.ObjectId(user._id.toString()),
+          uid:user._id.toString(),
           name: user.name,
           answer: req.body.answer,
           upvotes: [],
@@ -174,19 +168,18 @@ const createAnswer = async(req, res) => {
 
 const createComment = async(req, res) => {
 
-  const Doubts = req.app.get('Doubts');
 
   let user = JSON.parse(localStorage.getItem('user'))
 
   try {
     let name = user.name;
     console.log(name);
-    const result = await Doubts.updateOne({
-      answers: {$elemMatch: {_id: new BSON.ObjectId(req.params.aid)}}
+    const result = await Doubt.findOneAndUpdate({
+      answers: {$elemMatch: {_id:req.params.aid}}
     },
     {
       $addToSet:{"answers.$.comments":{
-        uid: new BSON.ObjectId(user._id.toString()),
+        uid:user._id.toString(),
         image: user.image,
         comment: req.body.comment,
       }
@@ -205,25 +198,25 @@ const updateDoubt = async(req, res) => {
   let action = req.query.action;
   let user = JSON.parse(localStorage.getItem('user'));
 
-  const Doubts = req.app.get('Doubts');
+  const Doubts = await Doubt.find();
 
   if(action === 'upvote') {
     console.log('Upvote');
 
-    let result = await Doubts.updateOne(
+    let result = await Doubt.findOneAndUpdate(
       {
-        _id: new BSON.ObjectId(id)
+        _id: id
       },
       {
         $addToSet: {
           upvotes: [
-            new BSON.ObjectId(user._id.toString())
+            user._id.toString()
           ]
         },
         $pull: {
           downvotes: {
             $in: [
-              new BSON.ObjectId(user._id.toString())
+              user._id.toString()
             ]
           }
         }
@@ -233,20 +226,20 @@ const updateDoubt = async(req, res) => {
     // console.log('Result: ', result);
   } else if (action === 'downvote') {
     console.log('downVote');
-    await Doubts.updateOne(
+    await Doubt.findOneAndUpdate(
       {
-        _id: new BSON.ObjectId(id)
+        _id:id
       },
       {
         $addToSet: {
           downvotes: [
-            new BSON.ObjectId(user._id.toString())
+          user._id.toString()
           ]
         },
         $pull: {
           upvotes: {
             $in: [
-              new BSON.ObjectId(user._id.toString())
+              user._id.toString()
             ]
           }
         }
@@ -260,25 +253,24 @@ const updateAnswer = async(req, res) => {
   let action = req.query.action;
   let user = JSON.parse(localStorage.getItem('user'));
 
-  const Doubts = req.app.get('Doubts');
 
   if(action === 'upvote') {
     console.log(action);
 
-    let result = await Doubts.updateOne(
+    let result = await Doubt.findOneAndUpdate(
       {
-        answers: {$elemMatch: {_id: new BSON.ObjectId(id)}}
+        answers: {$elemMatch: {_id:id}}
       },
       {
         $addToSet: {
           "answers.$.upvotes":[
-            new BSON.ObjectId(user._id.toString())
+            user._id.toString()
           ]
         },
         $pull: {
           "answer.$.downvotes": {
             $in: [
-              new BSON.ObjectId(user._id.toString())
+              user._id.toString()
             ]
           }
         }
@@ -290,20 +282,20 @@ const updateAnswer = async(req, res) => {
     console.log(action);
 
 
-    await Doubts.updateOne(
+    await Doubt.findOneAndUpdate(
       {
-        answers: {$elemMatch: {_id: new BSON.ObjectId(id)}}
+        answers: {$elemMatch: {_id: id}}
       },
       {
         $addToSet: {
           "answers.$.downvotes":[
-            new BSON.ObjectId(user._id.toString())
+            user._id.toString()
           ]
         },
         $pull: {
           "answer.$.upvotes": {
             $in: [
-              new BSON.ObjectId(user._id.toString())
+              user._id.toString()
             ]
           }
         }
@@ -314,14 +306,11 @@ const updateAnswer = async(req, res) => {
 
 const editDoubt = async(req, res) => {
   let id = req.params.id.toString().trim();
-  const Doubts = req.app.get('Doubts');
-  let user = JSON.parse(localStorage.getItem('user'));
-
 
   try {
-    let result = await Doubts.updateOne(
+    let result = await Doubt.findOneAndUpdate(
       {
-        _id: new BSON.ObjectId(id)
+        _id:id
       },
       {
         $set: {

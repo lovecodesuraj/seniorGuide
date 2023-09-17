@@ -1,9 +1,9 @@
-const Realm = require("realm");
-const BSON = require("bson");
+// const Realm = require("realm");
+// const BSON = require("bson");
 const ejs = require('../public/javascript/ejs');
+const {User}=require("../models/user.js")
+const {Event}=require("../models/event.js")
 
-
-// const app = new Realm.App({ id: "debuggers-lzxyc" });
 
 if (typeof localStorage === "undefined" || localStorage === null) {
   var LocalStorage = require('node-localstorage').LocalStorage;
@@ -21,11 +21,10 @@ const getEvents = async(req, res) =>{
 
   try{
     if (req.cookies.uid) {
-      const Users = req.app.get('Users');
-      const Events = req.app.get('Events'); //Get Database
-
+      const Users = await User.find();
+      const Events=await Event.find();
       let uid = req.cookies.uid.toString();
-      let user = await Users.findOne({_id: new BSON.ObjectId(uid)});
+      let user = await User.findOne({_id: uid});
       localStorage.setItem('user', JSON.stringify(user));
       //Update LocalStorage
 
@@ -37,7 +36,7 @@ const getEvents = async(req, res) =>{
       if(type) {
         if(type === "trending") {
 
-          events = await Events.find().sort({like: -1, participants: -1}).limit(10).toArray();
+          events = await Event.find().sort({like: -1, participants: -1}).limit(10).toArray();
           let trending = [];
           for (var i = 0; i < events.length; i++) {
 
@@ -58,11 +57,11 @@ const getEvents = async(req, res) =>{
           console.log(pids);
 
           for (var i = 0; i < pids.length; i++) {
-            events[i] = await Events.findOne({_id: new BSON.ObjectId(pids[i].pid.toString())})
+            events[i] = await Event.findOne({_id:pids[i].pid.toString()})
           }
         }
       } else {
-        events = await Events.find(query ? {genre: query}: {}).toArray().then(result => {
+        events = await Event.find(query ? {genre: query}: {}).then(result => {
           if (result) {
             // console.log(result);
             return result;
@@ -74,7 +73,7 @@ const getEvents = async(req, res) =>{
 
 
 
-      let alluser = await Users.find().toArray().then(result => {
+      let alluser = await User.find().then(result => {
         if (result) {
           // console.log(result);
           return result;
@@ -102,18 +101,16 @@ const getEvents = async(req, res) =>{
 
 const getSpecificEvent = async(req, res) =>{
   let id = req.params.id;
-  const Events = req.app.get('Events');
-  const Users = req.app.get('Users');
+  const Events = await Event.find();
+  const Users = await User.find();
 
   let specificEvent = {};
   let user = {};
   let currentUser = JSON.parse(localStorage.getItem('user'));
 
-
-
   try {
-    specificEvent = await Events.findOne({_id: new BSON.ObjectId(id)});
-    user = await Users.findOne({_id: new BSON.ObjectId(specificEvent.uid.toString())});
+    specificEvent = await Event.findOne({_id:id});
+    user = await User.findOne({_id:specificEvent.uid.toString()});
   } catch (e) {
     console.error(e.message);
   }
@@ -121,8 +118,7 @@ const getSpecificEvent = async(req, res) =>{
 }
 
 const searchEvent = async(req, res) => {
-  const Events = req.app.get('Events');
-
+  const Events = await Event.find();
   let results = await Events.aggregate([
     {
       "$search": {
@@ -146,8 +142,8 @@ const takeAction = async(req, res) => {
   console.log('Taking Action');
   let query = req.query.action;
   let pid = req.params.id;
-  const Users = req.app.get('Users');
-  const Events = req.app.get('Events');
+  const Users = await User.find();
+  const Events = await Event.find();
   let uid = JSON.parse(localStorage.getItem('user'))._id.toString();
 
 
@@ -159,7 +155,7 @@ const takeAction = async(req, res) => {
       {
         $addToSet: {
           archived: {
-            pid: new BSON.ObjectId(req.params.id.toString())
+            pid:req.params.id.toString()
           }
         }
       }
@@ -169,11 +165,11 @@ const takeAction = async(req, res) => {
     console.log('Like');
 
     let result = await Events.updateOne({
-      _id: new BSON.ObjectId(pid.toString())
+      _id:pid.toString()
     }, {
       $addToSet: {
         likes: [
-          new BSON.ObjectId(uid)
+          uid
         ]
       }
     })
@@ -194,9 +190,9 @@ const undoAction = async(req, res) => {
 
   if(query === "archive") {
 
-    let result = await Users.updateOne(
+    let result = await User.findOneAndUpdate(
       {
-        _id: new BSON.ObjectId(uid)
+        _id:uid
       },
       {
         $pull: {
@@ -208,14 +204,14 @@ const undoAction = async(req, res) => {
     )
   } else if (query === "like") {
     console.log('Like');
-    let result = await Events.updateOne(
+    let result = await Event.findOneAndUpdate(
       {
-        _id: new BSON.ObjectId(id)
+        _id: id
       },
       {
         $pull: {
           likes: {
-            $in: [new BSON.ObjectId(uid)]
+            $in: [uid]
           }
         }
       }

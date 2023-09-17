@@ -16,7 +16,7 @@ const gossipController = require("../controllers/gossip");
 router.route('/').get(userControllers.getHome);
 
 router.route('/SignUp').get(userControllers.getSignUp).post(userControllers.signUp);
-router.route('/form').post(userControllers.form);
+// router.route('/form').post(userControllers.form);
 
 
 router.route('/logIn').get(userControllers.getLogIn).post(userControllers.logIn);

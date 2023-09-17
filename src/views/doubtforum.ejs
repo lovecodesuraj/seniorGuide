@@ -1,260 +1,312 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>SeniorGuide</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/doubtforum.css">
-    <link rel="stylesheet" href="/css/nav.css">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@300&display=swap" rel="stylesheet">
+  <title>SeniorGuide</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/doubtforum.css">
+  <link rel="stylesheet" href="/css/nav.css">
 
-    <script src="https://kit.fontawesome.com/7d0e898fba.js" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/aea9fc94ab.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon"/>
-  </head>
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@300&display=swap" rel="stylesheet">
 
-  <% if(doubts.length > 0 ) {%>
-    <body onload="getDoubt('<%= doubts[doubts.length-1]._id%>')">
-  <% } else { %>
-    <body>
-  <% } %>
+  <script src="https://kit.fontawesome.com/7d0e898fba.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/aea9fc94ab.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+  <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+</head>
 
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-            <a class="navbar-brand" href="/"><i class="fas fa-bug icon"></i><p class="brand_name">Debuggers</p></a>
+<% if(doubts.length> 0 ) {%>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <body onload="getDoubt('<%= doubts[doubts.length-1]._id%>')">
+    <% } else { %>
+
+      <body>
+        <% } %>
+
+          <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+            <a class="navbar-brand" href="/"><i class="fas fa-bug icon"></i>
+              <p class="brand_name">seniorGuide</p>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" href="/gossip"><p class="about_nav_text">Gossip Room</p></a>
+                  <a class="nav-link " href="/">
+                    <p class="contact_nav_text">Profile</p>
+                  </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/events"><p class="about_nav_text">Events</p></a>
+                  <a class="nav-link" href="/gossip">
+                    <p class="about_nav_text">Gossip Room</p>
+                  </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href=""><p class="meet_nav_text">Doubt Forum</p></a>
-                  </li>
+                  <a class="nav-link" href="/events">
+                    <p class="about_nav_text">Events</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="">
+                    <p class="meet_nav_text">Doubt Forum</p>
+                  </a>
+                </li>
 
-                  <li class="nav-item">
-                   <a class="nav-link " href="/"><p class="contact_nav_text">Profile</p></a>
-                 </li>
-                 </ul>
-                 </div>
-
-      </nav>
-
-      <div class="main-container">
-        <section class="left-div">
-
-          <div class="new-post">
-            <div class="new-post-text">
-              <i class="fas fa-newspaper"></i>  New Post
+              </ul>
             </div>
-            <div class="post-search">
-                Search
-            </div>
-          </div>
 
-          <div class="today-doubt">
-            <div class="category-doubt">
-              Today <i class="fas fa-arrows-alt-v"></i>
-            </div>
-            <div class="toggle-by-arrow">
-              <% for(let i=0; i< todayDoubts.length; i++) { %>
-                  <div class="doubt-div-left" id="today-doubts">
-                    <div class="left-block-content">
-                      <a onclick="getDoubt('<%= todayDoubts[i]._id%>')"><h6><span>Q.</span> <%= todayDoubts[i].question %></h6>
-                      <p><%= todayDoubts[i].desc %></p></a>
-                    </div>
-                  </div>
-                <% } %>
-            </div>
-          </div>
-          <div class="today-doubt">
-            <div class="category-doubt">
-              Yesterday <i class="fas fa-arrows-alt-v"></i>
-            </div>
-            <div class="toggle-by-arrow">
-              <%  for(var i=0; i< yesterdayDoubts.length; i++){ %>
-                  <div class="doubt-div-left" id="yesterday-doubts">
-                    <div class="left-block-content">
-                      <a onclick="getDoubt('<%= yesterdayDoubts[i]._id%>')"><h6><span>Q.</span> <%= yesterdayDoubts[i].question %></h6>
-                      <p><%= yesterdayDoubts[i].desc %></p></a>
-                    </div>
-                  </div>
-                <%} %>
-            </div>
-          </div>
-          <div class="today-doubt">
-            <div class="category-doubt">
-              This week <i class="fas fa-arrows-alt-v"></i>
-            </div>
-            <div class="toggle-by-arrow">
-              <%  for(var i=0; i< thisWeekDoubts.length; i++){ %>
-                  <div class="doubt-div-left" id="week-doubts">
-                    <div class="left-block-content">
-                      <a onclick="getDoubt('<%= thisWeekDoubts[i]._id%>')"><h6><span>Q.</span> <%= thisWeekDoubts[i].question %></h6>
-                      <p><%= thisWeekDoubts[i].desc %></p></a>
-                    </div>
-                  </div>
-                <%} %>
-            </div>
-          </div>
-          <div class="today-doubt">
-            <div class="category-doubt">
-              This month <i class="fas fa-arrows-alt-v"></i>
-            </div>
-            <div class="toggle-by-arrow">
-              <%  for(var i=0; i< thisMonthDoubts.length; i++){ %>
-                  <div class="doubt-div-left">
-                    <div class="left-block-content" >
-                      <a onclick="getDoubt('<%= thisMonthDoubts[i]._id%>')"><h6><span>Q.</span> <%= thisMonthDoubts[i].question %></h6>
-                      <p><%= thisMonthDoubts[i].desc %></p></a>
-                    </div>
-                  </div>
-                <%} %>
-            </div>
-          </div>
-          <div class="today-doubt">
-            <div class="category-doubt">
-              Past Doubts <i class="fas fa-arrows-alt-v"></i>
-            </div>
-            <div class="toggle-by-arrow">
-              <%  for(var i=0; i< otherDoubts.length; i++){ %>
-                  <div class="doubt-div-left">
-                    <div class="left-block-content">
-                      <a onclick="getDoubt('<%= otherDoubts[i]._id%>')"><h6><span>Q.</span> <%= otherDoubts[i].question %></h6>
-                      <p><%= otherDoubts[i].desc %></p></a>
-                    </div>
-                  </div>
-                <%} %>
-            </div>
-          </div>
-        </section>
+          </nav>
 
-        <section class="mid-div">
+          <div class="main-container">
+            <section class="left-div">
 
-
-           <div id='show-doubt' class="doubt-section">
-
-
-           </div>
-
-
-          <div class="spinner-con">
-           <div class="spinner-container">
-             <img src="/assets/804.gif" alt="">
-           </div>
-          </div>
-
-
-          <div class="post-a-doubt">
-             <div class="post-doubt-div">
-                <div class="post-a-doubt-top">
-                  Post Your Doubt
+              <div class="new-post">
+                <div class="new-post-text">
+                  <i class="fas fa-newspaper"></i> New Post
                 </div>
-                <form action="/doubtforum" method="post">
-                <div class="post-a-doubt-body">
-
-                  <div class="post-type">
-                    Post as
-                    <div class="post-type-input">
-                      <input type="radio" name="postType" value="User" required="true">
-                      <label for="User"> User</label>
-                    </div>
-                    <div class="post-type-input">
-                      <input type="radio" name="postType" value="Anonymous" required="true">
-                      <label for="Anonymous">Anonymous</label>
-                    </div>
-
-
-                  </div>
-
-                  <div class="Question">
-                    <h5>Question</h5>
-                    <input type="text" name="question" value="" placeholder="Type your Question" required="true">
-                  </div>
-
-                  <div class="Desc">
-                    <h5>Description</h5>
-                    <textarea name="desc" rows="3" placeholder="Type your Description"></textarea>
-                  </div>
-
-                  <div class="doubt-buttons">
-                      <button type="submit" name="button">Post my Doubt</button>
-                      <button type="button" name="button" id="cancel-btn">Cancel</button>
-                  </div>
+                <div class="post-search">
+                  Search
                 </div>
-              </form>
+              </div>
 
-             </div>
-           </div>
-
-
-
-
-        </section>
-
-        <section class="right-div">
-
-
-          <div class="right-doubts">
-            <div class="today-doubt">
-            <div class="category-doubt">
-              Popular Doubts <i class="fas fa-arrows-alt-v"></i>
-            </div>
-            <div class="toggle-by-arrow">
-              <%  for(var i=0; i< 5; i++){ %>
-                  <div class="doubt-div-left">
+              <div class="today-doubt">
+                <div class="category-doubt">
+                  Today <i class="fas fa-arrows-alt-v"></i>
+                </div>
+                <div class="toggle-by-arrow">
+                  <% for(let i=0; i< todayDoubts.length; i++) { %>
+                    <div class="doubt-div-left" id="today-doubts">
                       <div class="left-block-content">
-                        <a onclick="" ><h6><span>Q.</span> Can you tell me what is PMC?</h6>
-                        <p>I have heard something like PMC,can you tell what it is.</p></a>
+                        <a onclick="getDoubt('<%= todayDoubts[i]._id%>')">
+                          <h6><span>Q.</span>
+                            <%= todayDoubts[i].question %>
+                          </h6>
+                          <p>
+                            <%= todayDoubts[i].desc %>
+                          </p>
+                        </a>
                       </div>
+                    </div>
+                    <% } %>
+                </div>
+              </div>
+              <div class="today-doubt">
+                <div class="category-doubt">
+                  Yesterday <i class="fas fa-arrows-alt-v"></i>
+                </div>
+                <div class="toggle-by-arrow">
+                  <% for(var i=0; i< yesterdayDoubts.length; i++){ %>
+                    <div class="doubt-div-left" id="yesterday-doubts">
+                      <div class="left-block-content">
+                        <a onclick="getDoubt('<%= yesterdayDoubts[i]._id%>')">
+                          <h6><span>Q.</span>
+                            <%= yesterdayDoubts[i].question %>
+                          </h6>
+                          <p>
+                            <%= yesterdayDoubts[i].desc %>
+                          </p>
+                        </a>
+                      </div>
+                    </div>
+                    <%} %>
+                </div>
+              </div>
+              <div class="today-doubt">
+                <div class="category-doubt">
+                  This week <i class="fas fa-arrows-alt-v"></i>
+                </div>
+                <div class="toggle-by-arrow">
+                  <% for(var i=0; i< thisWeekDoubts.length; i++){ %>
+                    <div class="doubt-div-left" id="week-doubts">
+                      <div class="left-block-content">
+                        <a onclick="getDoubt('<%= thisWeekDoubts[i]._id%>')">
+                          <h6><span>Q.</span>
+                            <%= thisWeekDoubts[i].question %>
+                          </h6>
+                          <p>
+                            <%= thisWeekDoubts[i].desc %>
+                          </p>
+                        </a>
+                      </div>
+                    </div>
+                    <%} %>
+                </div>
+              </div>
+              <div class="today-doubt">
+                <div class="category-doubt">
+                  This month <i class="fas fa-arrows-alt-v"></i>
+                </div>
+                <div class="toggle-by-arrow">
+                  <% for(var i=0; i< thisMonthDoubts.length; i++){ %>
+                    <div class="doubt-div-left">
+                      <div class="left-block-content">
+                        <a onclick="getDoubt('<%= thisMonthDoubts[i]._id%>')">
+                          <h6><span>Q.</span>
+                            <%= thisMonthDoubts[i].question %>
+                          </h6>
+                          <p>
+                            <%= thisMonthDoubts[i].desc %>
+                          </p>
+                        </a>
+                      </div>
+                    </div>
+                    <%} %>
+                </div>
+              </div>
+              <div class="today-doubt">
+                <div class="category-doubt">
+                  Past Doubts <i class="fas fa-arrows-alt-v"></i>
+                </div>
+                <div class="toggle-by-arrow">
+                  <% for(var i=0; i< otherDoubts.length; i++){ %>
+                    <div class="doubt-div-left">
+                      <div class="left-block-content">
+                        <a onclick="getDoubt('<%= otherDoubts[i]._id%>')">
+                          <h6><span>Q.</span>
+                            <%= otherDoubts[i].question %>
+                          </h6>
+                          <p>
+                            <%= otherDoubts[i].desc %>
+                          </p>
+                        </a>
+                      </div>
+                    </div>
+                    <%} %>
+                </div>
+              </div>
+            </section>
+
+            <section class="mid-div">
+
+
+              <div id='show-doubt' class="doubt-section">
+
+
+              </div>
+
+
+              <div class="spinner-con">
+                <div class="spinner-container">
+                  <img src="/assets/804.gif" alt="">
+                </div>
+              </div>
+
+
+              <div class="post-a-doubt">
+                <div class="post-doubt-div">
+                  <div class="post-a-doubt-top">
+                    Post Your Doubt
                   </div>
-                <%} %>
-            </div>
+                  <form action="/doubtforum" method="post">
+                    <div class="post-a-doubt-body">
+
+                      <div class="post-type">
+                        Post as
+                        <div class="post-type-input">
+                          <input type="radio" name="postType" value="User" required="true">
+                          <label for="User"> User</label>
+                        </div>
+                        <div class="post-type-input">
+                          <input type="radio" name="postType" value="Anonymous" required="true">
+                          <label for="Anonymous">Anonymous</label>
+                        </div>
 
 
-            </div>
+                      </div>
+
+                      <div class="Question">
+                        <h5>Question</h5>
+                        <input type="text" name="question" value="" placeholder="Type your Question" required="true">
+                      </div>
+
+                      <div class="Desc">
+                        <h5>Description</h5>
+                        <textarea name="desc" rows="3" placeholder="Type your Description"></textarea>
+                      </div>
+
+                      <div class="doubt-buttons">
+                        <button type="submit" name="button">Post my Doubt</button>
+                        <button type="button" name="button" id="cancel-btn">Cancel</button>
+                      </div>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+
+
+
+
+            </section>
+
+            <section class="right-div">
+
+
+              <div class="right-doubts">
+                <div class="today-doubt">
+                  <div class="category-doubt">
+                    Popular Doubts <i class="fas fa-arrows-alt-v"></i>
+                  </div>
+                  <div class="toggle-by-arrow">
+                    <% for(var i=0; i< 5; i++){ %>
+                      <div class="doubt-div-left">
+                        <div class="left-block-content">
+                          <a onclick="">
+                            <h6><span>Q.</span> Can you tell me what is PMC?</h6>
+                            <p>I have heard something like PMC,can you tell what it is.</p>
+                          </a>
+                        </div>
+                      </div>
+                      <%} %>
+                  </div>
+
+
+                </div>
+              </div>
+
+            </section>
           </div>
 
-        </section>
-      </div>
+
+          <script src="/javascript/lib/jquery.js">
+          </script>
+          <script src="/javascript/doubtforum.js">
+          </script>
+
+          <script>
 
 
-<script src="/javascript/lib/jquery.js">
-</script>
-<script src="/javascript/doubtforum.js">
-</script>
+            async function getDoubt(_id) {
+              console.log(_id);
+              window.history.pushState("", "", "/doubtforum");
 
-<script >
+              _id = _id.toString();
+              fetch(`/doubtforum/${_id}`)
+                .then(response => response.json())
+                .then(data => {
 
-
-async function getDoubt(_id) {
-  console.log(_id);
-  window.history.pushState("", "", "/doubtforum");
-
-  _id = _id.toString();
-  fetch(`/doubtforum/${_id}`)
-  .then(response => response.json())
-  .then(data => {
-
-    let  doubt = data.doubt;
+                  let doubt = data.doubt;
 
 
 
-    if(doubt) {
-      let answers = doubt.answers;
+                  if (doubt) {
+                    let answers = doubt.answers;
 
-      document.getElementById('show-doubt').innerHTML = `
+                    document.getElementById('show-doubt').innerHTML = `
 
       <div class="question-mid-div">
 
@@ -324,13 +376,13 @@ async function getDoubt(_id) {
       </div>
 
       ${(() => {
-        if (answers) {
-        if(answers.length > 0)  {
-          let htmlAnswer = [];
-          try {
-            for (let i = 0; i < answers.length; i++) {
-              let comments = answers[i].comments;
-              htmlAnswer[i] =  `
+                        if (answers) {
+                          if (answers.length > 0) {
+                            let htmlAnswer = [];
+                            try {
+                              for (let i = 0; i < answers.length; i++) {
+                                let comments = answers[i].comments;
+                                htmlAnswer[i] = `
               <div class="question-mid-div">
 
               <div class="question-top" id="answer-top">
@@ -347,18 +399,18 @@ async function getDoubt(_id) {
               <ul class="answer-comments">
 
               ${(() => {
-                if(comments) {
-                  if(comments.length > 0) {
-                    let htmlComment = [];
-                    try {
-                      for (var j = 0; j < comments.length; j++) {
-                        console.log(comments[j].comment);
-                        htmlComment[j] =  `
+                                    if (comments) {
+                                      if (comments.length > 0) {
+                                        let htmlComment = [];
+                                        try {
+                                          for (var j = 0; j < comments.length; j++) {
+                                            console.log(comments[j].comment);
+                                            htmlComment[j] = `
 
                         <li class="comment-list"> <span>
                         ${(() => {
-                          if(comments[j].image ===  null) {
-                            return `
+                                                if (comments[j].image === null) {
+                                                  return `
                             <% if(user.gender === "male") { %>
                               <img src="https://cdn.discordapp.com/attachments/818540389358108702/818540444849012787/undraw_male_avatar_323b.png" alt="">
                             <% } else { %>
@@ -366,27 +418,27 @@ async function getDoubt(_id) {
                             <% } %>
 
                             `
-                          } else {
-                            return `
+                                                } else {
+                                                  return `
                               <img src="https://drive.google.com/thumbnail?id=${comments[j].image}" alt="">
                             `
-                          }
-                        })()}
+                                                }
+                                              })()}
                         </span> <div class="comment-div"><p class="comment-txt">${comments[j].comment}</p></div></li>
 
                         `
-                      }
+                                          }
 
-                    } catch (e) {
-                      console.error(e);
-                    } finally {
-                      return htmlComment.join("");
-                    }
-                  }
-                } else {
-                  return ``;
-                }
-              })()}
+                                        } catch (e) {
+                                          console.error(e);
+                                        } finally {
+                                          return htmlComment.join("");
+                                        }
+                                      }
+                                    } else {
+                                      return ``;
+                                    }
+                                  })()}
 
               <li class="comment-list add-comment" id="new-comment-div"> <span>
               <% if(!user.image) { %>
@@ -439,53 +491,54 @@ async function getDoubt(_id) {
               </div>
               </div>
               `
-            }
+                              }
 
-          } catch (e) {
-            console.error(e);
-          } finally {
+                            } catch (e) {
+                              console.error(e);
+                            } finally {
 
-            return htmlAnswer.join("");
-          }
-        }
-      } else {
-        return ``
-      }
+                              return htmlAnswer.join("");
+                            }
+                          }
+                        } else {
+                          return ``
+                        }
 
-      })()}
+                      })()}
 
 
 
       <iframe style="display: none" onload="xyz()"> </iframe>
 
       `
-    }
-  });
-}
+                  }
+                });
+            }
 
 
 
 
-async function updateDoubt(id, action) {
-  await fetch(`/doubtforum/updateDoubt/${id}?action=${action}`)
-  .then( () => {
-    console.log('Working');
-    getDoubt(id);
+            async function updateDoubt(id, action) {
+              await fetch(`/doubtforum/updateDoubt/${id}?action=${action}`)
+                .then(() => {
+                  console.log('Working');
+                  getDoubt(id);
 
-  })
-  .catch(err => console.error(err));
+                })
+                .catch(err => console.error(err));
 
-}
+            }
 
-async function updateAnswer(id, _id, action) {
-  fetch(`/doubtforum/${id}/${did}/updateAnswer?action=${action}`)
-  .catch(err => console.error(err));
-}
-
-
-
-</script>
+            async function updateAnswer(id, _id, action) {
+              fetch(`/doubtforum/${id}/${did}/updateAnswer?action=${action}`)
+                .catch(err => console.error(err));
+            }
 
 
-  </body>
+
+          </script>
+
+
+      </body>
+
 </html>

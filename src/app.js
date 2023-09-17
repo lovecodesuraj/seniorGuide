@@ -1,11 +1,10 @@
 const express = require('express');
-const request = require('request');
 const path = require('path');
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser');
-const Realm = require("realm");
+// const Realm = require("realm");
 const mainRouter=require('./routes/mainRouter');
-
+// const clientID=
 
 const app=express();
 
@@ -20,7 +19,8 @@ app.set('views', viewsPath)
 app.use(express.static(pathName));
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.urlencoded());
 
 // parse application/json
 app.use(bodyParser.json())

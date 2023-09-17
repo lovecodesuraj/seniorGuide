@@ -1,10 +1,10 @@
-const Realm = require("realm");
-const BSON = require("bson");
+// const Realm = require("realm");
+// const BSON = require("bson");
 // const mongoose=require("mongoose");
+const {User} = require("../models/user.js");
 const ejs = require('../public/javascript/ejs');
 
 
-const app = new Realm.App({ id: "seniorguiderealm-ahjoc" });
 
 if (typeof localStorage === "undefined" || localStorage === null) {
   var LocalStorage = require('node-localstorage').LocalStorage;
@@ -13,7 +13,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 
 
 
-const getHome = async(req, res) => {
+const getHome = async (req, res) => {
 
   try {
     if (req.cookies.uid) {
@@ -28,7 +28,7 @@ const getHome = async(req, res) => {
 
         console.log('Token Id: ', tokenId);
         await app.emailPasswordAuth.confirmUser(token, tokenId);
-        res.render('form', {title: 'Detail Form'});
+        res.render('form', { title: 'Detail Form' });
       }
     }
   } catch (e) {
@@ -38,25 +38,45 @@ const getHome = async(req, res) => {
 }
 
 
-const getSignUp = function(req, res) {
+const getSignUp = function (req, res) {
   if (req.cookies.uid) {
-    res.redirect(`/profile/${app.currentUser.id}`);
+    res.redirect(`/profile/${req.cookies.uid}`);
   } else {
     res.render('SignUp');
   }
 }
 
-const signUp = async(req,res)=>{
+const signUp = async (req, res) => {
+  console.log(req.body)
   try {
-    if(!req.body.email||!req.body.college||!req.body.password||!req.body.confirm){
+    if (!req.body.email || !req.body.password || !req.body.confirm) {
       throw new Error("All fields must be filled");
-    } else if(req.body.password!==req.body.confirm){
+    } else if (req.body.password !== req.body.confirm) {
       throw new Error("Passwords do not match");
     } else {
-      const email = req.body.email+req.body.college;
-      const password = req.body.password;
-      await app.emailPasswordAuth.registerUser(email, password);
-      res.send({Message: "Check Your Email for Confirmation"})
+      const { name, email, password, gender, branch, rollNo,college } = req.body;
+      let genre = req.body.genre.split(' ');
+
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        res.send({ Message: "User Already exists." })
+      } else {
+        const newUser = await User.create({
+          name,
+          email,
+          college,
+          password,
+          branch,
+          gender,
+          genre,
+          rollNo
+        });
+        res.cookie('uid',newUser._id);
+        res.redirect(`/profile/${newUser._id}`);
+      }
+
+      // await app.emailPasswordAuth.registerUser(email, password);
+      // res.send({Message: "Check Your Email for Confirmation"})
 
     }
 
@@ -65,72 +85,77 @@ const signUp = async(req,res)=>{
   }
 }
 
-const form = async({body, params}, res)=>{
-  try {
-    const credentials = Realm.Credentials.emailPassword(
-      body.email,
-      body.password
-    );
-    const user = await app.logIn(credentials);
-    console.log("Form: ",user.id);
-    const mongoUser = user.mongoClient("mongodb-atlas");
-    const collection = mongoUser.db("Debuggers").collection("Users");
+// const form = async ({ body, params }, res) => {
+//   try {
+//     const credentials = Realm.Credentials.emailPassword(
+//       body.email,
+//       body.password
+//     );
+//     const user = await app.logIn(credentials);
+//     console.log("Form: ", user.id);
+//     const mongoUser = user.mongoClient("mongodb-atlas");
+//     const collection = mongoUser.db("").collection("Users");
 
-    let genre = body.genre.split(' ');
+//     let genre = body.genre.split(' ');
 
-    const result = await collection.insertOne({
-      _id: new BSON.ObjectId(user.id),
-      name: body.name,
-      branch: body.branch,
-      genre: genre,
-      rollNo:body.rollNo,
-      email: body.email,
-      gender: body.gender
-    })
+//     const result = await collection.insertOne({
+//       _id: new BSON.ObjectId(user.id),
+//       name: body.name,
+//       branch: body.branch,
+//       genre: genre,
+//       rollNo: body.rollNo,
+//       email: body.email,
+//       gender: body.gender
+//     })
 
-    console.log("Form: ", result);
-    console.log("Successfully logged in!", user.id);
-    res.cookie('uid', new BSON.ObjectId(user.id));
-    res.redirect(`/profile/${user.id}`);
+//     console.log("Form: ", result);
+//     console.log("Successfully logged in!", user.id);
+//     res.cookie('uid', new BSON.ObjectId(user.id));
+//     res.redirect(`/profile/${user.id}`);
 
-  } catch (e) {
-    console.error("Form Error: ", e);
-  }
+//   } catch (e) {
+//     console.error("Form Error: ", e);
+//   }
 
-}
+// }
 
 
-const getLogIn = async(req, res) => {
+const getLogIn = async (req, res) => {
   if (req.cookies.uid) {
-    res.redirect(`/profile/${app.currentUser.id}`);
+    res.redirect(`/profile/${req.cookies.uid}`);
   } else {
     res.render('login');
   }
 }
-const logIn = async(req, res) => {
-
+const logIn = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    if (!req.body.email||!req.body.college||!req.body.password) {
+    if (!email || !password) {
       throw new Error("All fields are necessary!")
     } else {
-      const credentials = Realm.Credentials.emailPassword(
-        req.body.email + req.body.college,
-        req.body.password
-      );
-      const user = await app.logIn(credentials);
-      console.log("Successfully logged in!", user.id);
-      res.cookie('uid', new BSON.ObjectId(user.id))
-      res.redirect(`/profile/${user.id}`);
+      const existingUser = await User.findOne({ email });
+      if (!existingUser) {
+        res.send({ Message: "User not found." })
+      } else {
+        if (!existingUser.password === password) {
+          res.send({ Message: "Wromg credentials." })
+        } else {
+          // const user=await User.findOne({email})
+          console.log("Successfully logged in!", existingUser.id);
+          res.cookie('uid',existingUser.id)
+          res.redirect(`/profile/${existingUser.id}`);
+        }
+      }
+
     }
 
   } catch (e) {
     console.error("Failed to log in", e);
   }
 }
-const logOut = async(req, res) => {
+const logOut = async (req, res) => {
   try {
     if (req.cookies.uid) {
-      await app.allUsers[req.cookies.uid.toString()].logOut();
       res.clearCookie('uid');
       localStorage.removeItem('user')
     }
@@ -141,12 +166,12 @@ const logOut = async(req, res) => {
 
 }
 
-const getProfile = async(req, res) => {
+const getProfile = async (req, res) => {
 
 
   try {
     console.log(req.params.id)
-    let id = new BSON.ObjectId(req.params.id.toString());
+    let id =req.params.id;
     let owner = false;
     let user = {};
 
@@ -155,24 +180,25 @@ const getProfile = async(req, res) => {
       res.redirect('/');
 
     } else {
-      const Users = req.app.get('Users');
-      const Events = req.app.get('Events');
+      const Users = User.find({});
+      // const Events = req.app.get('Events');
 
-      user = await Users.findOne({_id: id});
-      console.log({user})
-      if(user === null) {
+      user = await User.findOne({ _id: id });
+      console.log({ user })
+      if (user === null) {
         console.log("user not found");
-        await app.allUsers[req.cookies.uid.toString()]?.logOut();
-        res.render('form', {title: "Detail Form"});
+        // await app.allUsers[req.cookies.uid.toString()]?.logOut();
+        res.render('SignUp', { title: "SignUp" });
       } // Render To Form For New User
 
-      if(id.toString() === req.cookies.uid.toString()) {
+      if (id.toString() === req.cookies.uid.toString()) {
         localStorage.setItem('user', JSON.stringify(user));
-        owner  = true;
+        owner = true;
       } // Update LocalStorage
 
-      let events = await Events.find({uid: id});
-      res.render('newProfile', {user, events, ejs, owner}); //Rende Profile
+      // let events = await Events.find({ uid: id });
+      events=[];
+      res.render('newProfile', { user, events, ejs, owner }); //Rende Profile
 
     }
   } catch (e) {
@@ -181,73 +207,10 @@ const getProfile = async(req, res) => {
 }
 
 
-
-
-/*
-const upVote= async ()=>{
-
-try {
-
-if (app.currentUser !== null) {
-const mongo = getMongo();
-const Events = mongo.events;
-const id=req.query.pid;
-
-const query = { "_id": id };
-const update =   { "$inc": { "votes": 1 } };
-const options = { "upsert": false };
-
-Events.updateOne(query, update, options)
-.then(result => {
-const { matchedCount, modifiedCount } = result;
-if(matchedCount && modifiedCount) {
-console.log(`Successfully updated the item.`)
-}
-})
-.catch(err => console.error(`Failed to update the item: ${err}`))
-
-}else {
-res.redirect('/');
-}
-} catch (e) {
-console.log("Upvote error:",e);
-}
-}
-
-const downVote= async ()=>{
-
-try {
-
-if (app.currentUser !== null) {
-const mongo = getMongo();
-const Events = mongo.events;
-const id=req.query.pid;
-const query = { "_id": id };
-const update =   { "$inc": { "votes": -1 } };
-const options = { "upsert": false };
-
-Events.updateOne(query, update, options)
-.then(result => {
-const { matchedCount, modifiedCount } = result;
-if(matchedCount && modifiedCount) {
-console.log(`Successfully updated the item.`)
-}
-})
-.catch(err => console.error(`Failed to update the item: ${err}`))
-
-}else {
-res.redirect('/');
-}
-} catch (e) {
-console.log("downvote error :",e);
-}
-}
-*/
-module.exports={
+module.exports = {
   getHome,
   getSignUp,
   signUp,
-  form,
   getLogIn,
   logIn,
   logOut,

@@ -1,14 +1,28 @@
-const Realm = require("realm");
-const BSON = require("bson");
-const sharp = require('sharp');
+// const Realm = require("realm");
+// const BSON = require("bson");
+// const sharp = require('sharp');
 const fs = require('fs')
+const { config } = require("dotenv");
+config();
 const path = require('path');
-const {drive} = require('../services/googleapis');
+const { drive } = require('../services/googleapis');
+const { User } = require("../models/user.js")
+const { Event } = require("../models/event.js")
+const { google } = require("googleapis");
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI;
+
+const oauth2Client = new google.auth.OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI,
+)
+
+oauth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 
 
 
-
-// const app = new Realm.App({ id: "debuggers-lzxyc" });
 
 if (typeof localStorage === "undefined" || localStorage === null) {
   var LocalStorage = require('node-localstorage').LocalStorage;
@@ -24,57 +38,27 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 
 
 
-const editProfileImage = async(req, res) => {
+const editProfileImage = async (req, res) => {
 
-  const Users = req.app.get('Users')
   var imgData = req.file.buffer;
   const user = JSON.parse(localStorage.getItem('user'));
   try {
 
-    let files = await drive.files.list({
-      q: `name = '${user._id.toString()}'`
-    });
+    // let resizedImage = await sharp(imgData).resize(289, 347).png();
+    //  resizedImage = resizedImage.toString('base64');
+    // // resizedImage = new Buffer.from(resizedImage, 'base64');
+    // console.log(resizedImage);
+    function base64_encode(imgData) {
+      // read binary data
+      var bitmap = fs.readFileSync(imgData);
+      // convert binary data to base64 encoded string
+      return new Buffer(bitmap).toString('base64');
+  }
+  const resizedImage=base64_encode(imgData);
+  console.log({resizedImage});
 
-    files = files.data.files
-    // if(files.length>0) {
-    //   let result = await drive.files.delete({
-    //     fileId: files[0].id
-    //   });//Delete Iamge File If Already Exists
-      // console.log("Delete Result", result.data);
-    // } // Check File Name
-
-
-
-    let resizedImage = await sharp(imgData).resize(289, 347).png().toBuffer();
-    resizedImage = resizedImage.toString('base64');
-    resizedImage = new Buffer.from(resizedImage, 'base64');
-    fs.writeFileSync('src/controllers/image.png', resizedImage);//Created Temp Image File In Controllers Directory
-
-
-    const filePath = path.join(__dirname, 'image.png');
-    const response = await drive.files.create({
-      requestBody: {
-        name: user._id.toString(),
-        mimeType: 'image/png'
-      },
-      media: {
-        mimeType: 'image/png',
-        body: fs.createReadStream(filePath)
-      }
-    }); // To Upload New Image File
-
-    console.log(response.data);
-
-    await drive.permissions.create({
-      fileId: response.data.id,
-      requestBody: {
-        role: 'reader',
-        type: 'anyone'
-      }
-    }); //Change File Permissions to Public
-
-    await Users.updateOne({
-      _id: new BSON.ObjectId(req.cookies.uid.toString())
+    await User.findOneAndUpdate({
+      _id:req.cookies.uid
     }, {
       $set: {
         image: response.data.id
@@ -82,18 +66,20 @@ const editProfileImage = async(req, res) => {
     }); // Uploading URL TO Mongo
 
 
-  } catch(err) {
+
+
+  } catch (err) {
     console.error("Edit Profile Image: ", err);
   } finally {
     res.redirect(`/profile/${req.cookies.uid}`);
   }
 }
 
-const createPost = async(req, res) => {
-  const Users = req.app.get('Users');
-  const Events = req.app.get('Events');
+const createPost = async (req, res) => {
+  // const Users = await User.find();
+  const Events = await Event.find();
   let user = JSON.parse(localStorage.getItem('user'));
-  let id = new BSON.ObjectId();
+  // let id = new BSON.ObjectId();
   let image = '';
 
 
@@ -107,40 +93,60 @@ const createPost = async(req, res) => {
       image = new Buffer.from(image, 'base64');
       fs.writeFileSync('src/controllers/image.png', image);
 
-
       const filePath = path.join(__dirname, 'image.png');
+      console.log({ clientID: CLIENT_ID });
+      console.log({ clinetSecret: CLIENT_SECRET });
+      oauth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+      const drive = google.drive({
+        version: 'v3',
+        auth: oauth2Client
+      })
+
       const response = await drive.files.create({
         requestBody: {
-          name: id.toString(),
+          name: user._id.toString(),
           mimeType: 'image/png'
         },
         media: {
           mimeType: 'image/png',
           body: fs.createReadStream(filePath)
         }
-      }); // Create New Image File
-
-      await drive.permissions.create({
-        fileId: response.data.id,
-        requestBody: {
-          role: 'reader',
-          type: 'anyone'
-        }
-      }); //Change File Permissions to Public
-
+      })
       image = response.data.id;
     }
+    const createPublicUrl = async () => {
+     const fileId=image;
+      try {
+        await drive.permissions.create({
+          fileId,
+          requestBody: {
+            role:'reader',
+            type:'anyone',
+          }
+        })
+        const result = await drive.files.get({
+          fileId,
+          fields:'webViewLink, webContentLink',
+        })
+        console.log({result});
+        return result.webViweLink;
+      } catch (error) {
+        console.log("erroer in generating public url",error);
+      }
+    }
 
-    if(req.cookies.uid) {
-      const result = await Events.insertOne({
-        _id: id,
-        uid: new BSON.ObjectId(user._id.toString()),
+    image = await createPublicUrl();
+    console.log({image});
+
+    if (req.cookies.uid) {
+      const result = await Event.create({
+        uid: user._id,
         title: req.body.title.trim(),
-        desc: req.body.desc.trim(),
+        desc: req.body.description.trim(),
         genre: req.body.genre.trim(),
         image: image,
-        buttonName: req.body.buttonName||null,
-        url: req.body.url||null,
+        buttonName: req.body.buttonName || null,
+        url: req.body.url || null,
         like: 0
       });
 
@@ -158,10 +164,10 @@ const createPost = async(req, res) => {
 
 }
 
-const searchUser = async(req, res) => {
+const searchUser = async (req, res) => {
 
 
-  const Users = req.app.get('Users');
+  const Users = await User.find();
 
 
   let result = await Users.aggregate([
@@ -182,7 +188,7 @@ const searchUser = async(req, res) => {
 
 
 
-  res.json({result})
+  res.json({ result })
 }
 
 
