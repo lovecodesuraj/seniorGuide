@@ -9,6 +9,10 @@ body{
 
 }
 
+.nav_item{
+  cursor: pointer;
+}
+
 .navbar{
   opacity: 0.8;
 }
