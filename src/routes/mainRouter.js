@@ -1,6 +1,12 @@
 const express = require('express');
 const multer = require('multer');
 
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require('node-localstorage').LocalStorage;
+  localStorage = new LocalStorage('./scratch');
+}
+
+// const user=localStorage.getItem('user');
 
 var storage = multer.memoryStorage()
 var upload = multer({ storage: storage })

@@ -9,7 +9,8 @@ const userSchema=mongoose.Schema({
     rollNo:Number,
     gender:String,
     college:String,
-    
+    image:String,
+    archived:Array
 })
 
  var User=mongoose.model('User',userSchema);

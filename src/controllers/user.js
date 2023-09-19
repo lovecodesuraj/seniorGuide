@@ -47,7 +47,7 @@ const getSignUp = function (req, res) {
 }
 
 const signUp = async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   try {
     if (!req.body.email || !req.body.password || !req.body.confirm) {
       throw new Error("All fields must be filled");
@@ -72,21 +72,20 @@ const signUp = async (req, res) => {
           rollNo
         });
         res.cookie('uid',newUser._id);
+        localStorage.setItem('user',JSON.stringify(newUser))
         res.redirect(`/profile/${newUser._id}`);
       }
 
-      // await app.emailPasswordAuth.registerUser(email, password);
-      // res.send({Message: "Check Your Email for Confirmation"})
 
     }
-
+    
   } catch (e) {
     console.error("SignUp Error: ", e);
   }
 }
 
 // const form = async ({ body, params }, res) => {
-//   try {
+  //   try {
 //     const credentials = Realm.Credentials.emailPassword(
 //       body.email,
 //       body.password
@@ -99,8 +98,8 @@ const signUp = async (req, res) => {
 //     let genre = body.genre.split(' ');
 
 //     const result = await collection.insertOne({
-//       _id: new BSON.ObjectId(user.id),
-//       name: body.name,
+  //       _id: new BSON.ObjectId(user.id),
+  //       name: body.name,
 //       branch: body.branch,
 //       genre: genre,
 //       rollNo: body.rollNo,
@@ -114,13 +113,13 @@ const signUp = async (req, res) => {
 //     res.redirect(`/profile/${user.id}`);
 
 //   } catch (e) {
-//     console.error("Form Error: ", e);
-//   }
-
-// }
-
-
-const getLogIn = async (req, res) => {
+  //     console.error("Form Error: ", e);
+  //   }
+  
+  // }
+  
+  
+  const getLogIn = async (req, res) => {
   if (req.cookies.uid) {
     res.redirect(`/profile/${req.cookies.uid}`);
   } else {
@@ -138,10 +137,12 @@ const logIn = async (req, res) => {
         res.send({ Message: "User not found." })
       } else {
         if (!existingUser.password === password) {
-          res.send({ Message: "Wromg credentials." })
+          res.send({ Message: "Wrong credentials." })
         } else {
           // const user=await User.findOne({email})
+          const user=await User.findOne({email});
           console.log("Successfully logged in!", existingUser.id);
+          localStorage.setItem('user',JSON.stringify(user));
           res.cookie('uid',existingUser.id)
           res.redirect(`/profile/${existingUser.id}`);
         }

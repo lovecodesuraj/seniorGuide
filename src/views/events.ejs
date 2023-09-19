@@ -208,7 +208,7 @@
                   <div class="post-container">
                     <div class="image-container">
                       <div class="img-container-inner">
-                        <img src="https://drive.google.com/uc?export=view&id=<%= events[i].image %>" alt="">
+                        <img src="<%= events[i].image %>" alt="">
                       </div>
                     </div>
                     <div class="post-details">
@@ -543,8 +543,8 @@
         $('.genre-update').removeClass("Internship");
         $('.genre-update').removeClass("Research");
         $('.genre-update').addClass(specificEvent.genre);
-        $('.post2-img').attr("src",`https://drive.google.com/uc?export=view&id=${specificEvent.image}`);
-        $('.post2-user-img').attr("src",`https://drive.google.com/thumbnail?id=${user.image}`);
+        $('.post2-img').attr("src",`${specificEvent.image}`);
+        $('.post2-user-img').attr("src",`${user.image}`);
         $('.right-post').fadeTo("slow",1);
         $('.left-post').fadeTo("slow",1);
         if(likeBool) {

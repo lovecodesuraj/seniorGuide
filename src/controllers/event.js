@@ -11,8 +11,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 }
 
 
-var users =[];
-var allEvents = [];
+
 
 
 const getEvents = async(req, res) =>{
@@ -21,8 +20,6 @@ const getEvents = async(req, res) =>{
 
   try{
     if (req.cookies.uid) {
-      const Users = await User.find();
-      const Events=await Event.find();
       let uid = req.cookies.uid.toString();
       let user = await User.findOne({_id: uid});
       localStorage.setItem('user', JSON.stringify(user));
@@ -36,7 +33,7 @@ const getEvents = async(req, res) =>{
       if(type) {
         if(type === "trending") {
 
-          events = await Event.find().sort({like: -1, participants: -1}).limit(10).toArray();
+          events = await Event.find({}).sort({like: -1, participants: -1}).limit(10);
           let trending = [];
           for (var i = 0; i < events.length; i++) {
 
@@ -54,7 +51,7 @@ const getEvents = async(req, res) =>{
 
         } else if (type === "archived") {
           let pids = user.archived;
-          console.log(pids);
+          // console.log(pids);
 
           for (var i = 0; i < pids.length; i++) {
             events[i] = await Event.findOne({_id:pids[i].pid.toString()})
@@ -142,15 +139,15 @@ const takeAction = async(req, res) => {
   console.log('Taking Action');
   let query = req.query.action;
   let pid = req.params.id;
-  const Users = await User.find();
-  const Events = await Event.find();
+  // const Users = await User.find();
+  // const Events = await Event.find();
   let uid = JSON.parse(localStorage.getItem('user'))._id.toString();
 
 
   if (query === "archive") {
-    let result = await Users.updateOne(
+    await User.findOneAndUpdate(
       {
-        _id: new BSON.ObjectId(uid)
+        _id:uid
       },
       {
         $addToSet: {
@@ -164,8 +161,8 @@ const takeAction = async(req, res) => {
   } else if (query === "like") {
     console.log('Like');
 
-    let result = await Events.updateOne({
-      _id:pid.toString()
+    let result = await Event.findOneAndUpdate({
+      _id:pid
     }, {
       $addToSet: {
         likes: [
@@ -184,13 +181,11 @@ const undoAction = async(req, res) => {
 
   let query = req.query.action;
   let id = req.params.id.toString();
-  const Users = req.app.get('Users');
-  const Events = req.app.get('Events');
   let uid = JSON.parse(localStorage.getItem('user'))._id.toString();
 
   if(query === "archive") {
 
-    let result = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       {
         _id:uid
       },
@@ -204,7 +199,7 @@ const undoAction = async(req, res) => {
     )
   } else if (query === "like") {
     console.log('Like');
-    let result = await Event.findOneAndUpdate(
+    await Event.findOneAndUpdate(
       {
         _id: id
       },

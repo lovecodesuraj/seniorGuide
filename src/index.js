@@ -8,7 +8,9 @@ var socket = require('socket.io');
 var io = socket(httpServer);
 var frmsg = require('./utils/msgs');
 
-const {User} = require("./models/user.js")
+const {User} = require("./models/user.js");
+const { Doubt } = require('./models/doubt');
+const { Event } = require('./models/event');
 
 
 const port = process.env.PORT || 3000;
@@ -47,6 +49,8 @@ httpServer.listen(port, async () => {
     .catch((err)=>{console.log(err)});
       
     Users = await User.find({});
+    Events=await Event.find({});
+    Doubts=await Doubt.find({});
 
 
 
